@@ -6,17 +6,13 @@ A VERY rudimentary proof of concept of a local MCP server for OpenHEXA using Cla
 ### 1. Install Dependencies
 
 ```bash
-# Option 1: Using pip
 pip install -r requirements.txt
-
-# Option 2: Install in development mode
-pip install -e .
 ```
 
 ### 2. Configure Claude Desktop
 
 1. Edit your Claude Desktop configuration file:
-   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **macOS**: `/Users/{youruser}/Library/Application Support/Claude/claude_desktop_config.json`
    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
 2. Add or merge the configuration from `claude_desktop_config.json`:
@@ -36,15 +32,15 @@ pip install -e .
 }
 ```
 
-3. Replace the placeholder values with your actual OpenHEXA credentials
+3. Replace the placeholder values with URL and OpenHEXA token
 4. Restart Claude Desktop
-5. You should now see:
+5. You should now see OpenHEXA as an integration tool:
 
-   
+  
 ![CleanShot 2025-07-04 at 10 24 17](https://github.com/user-attachments/assets/757ac51d-e8cd-49a1-93ed-7e9d84937dca)
 
 
-### 5. Start Using with Claude
+### 3. Start Using with Claude
 
 Once configured, you can ask Claude questions like:
 
