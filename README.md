@@ -3,7 +3,7 @@ A VERY rudimentary proof of concept of a local MCP server for OpenHEXA using Cla
 
 # Setup guide
 
-### 1. Install Dependencies
+### 1. Setup .venv and install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -21,15 +21,16 @@ pip install -r requirements.txt
 {
   "mcpServers": {
     "openhexa": {
-      "command": "python",
+      "command": "{path}/mcp-openhexa/.venv/bin/python",
       "args": ["-m", "mcp_openhexa.server"],
+      "cwd": "{path}/mcp-openhexa",
       "env": {
-        "HEXA_TOKEN": "your_openhexa_token_here",
-        "HEXA_SERVER_URL": "https://your-openhexa-instance.com"
+        "HEXA_TOKEN": "{YOUR TOKEN HERE}",
+        "HEXA_SERVER_URL": "https://app.openhexa.org/"
       }
     }
   }
-}
+} 
 ```
 
 3. Replace the placeholder values with URL and OpenHEXA token
