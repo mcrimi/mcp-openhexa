@@ -1,5 +1,5 @@
 # mcp-openhexa
-A proof of concept of a local MCP server for OpenHEXA using Claude Desktop
+A VERY rudimentary proof of concept of a local MCP server for OpenHEXA using Claude Desktop
 
 # Setup guide
 
