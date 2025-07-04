@@ -8,7 +8,6 @@ import sys
 from typing import Any, Dict, List, Optional, Union
 
 from fastmcp import FastMCP
-from openhexa.sdk.client import openhexa
 import requests
 import base64
 
@@ -573,128 +572,6 @@ def get_dataset_file_details(file_id: str) -> Dict[str, Any]:
         return {"file": file}
     except Exception as e:
         return {"error": f"Failed to get file details: {str(e)}"}
-
-
-@mcp.tool
-def download_dataset_file(file_id: str, save_path: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Download a dataset file by its ID.
-    
-    Args:
-        file_id: The ID of the file to download
-        save_path: Optional local path to save the file. If not provided, returns file content as base64
-        
-    Returns:
-        Dict containing download information:
-        - success: Boolean indicating if download was successful
-        - filename: Original filename
-        - size: File size in bytes
-        - content_type: MIME type of the file
-        - saved_to: Path where file was saved (if save_path provided)
-        - content_base64: Base64 encoded file content (if save_path not provided)
-        - download_url: The URL used for download
-    """
-    if not OPENHEXA_AVAILABLE:
-        return {"error": "OpenHEXA SDK not available. Please configure your OpenHEXA credentials."}
-    
-    try:
-        # First get file details to get the download URL
-        file_details = get_dataset_file_details(file_id)
-        if "error" in file_details:
-            return file_details
-        
-        file_info = file_details["file"]
-        download_url = file_info.get("downloadUrl")
-        filename = file_info.get("filename", "unknown_file")
-        content_type = file_info.get("contentType", "application/octet-stream")
-        file_size = file_info.get("size", 0)
-        
-        if not download_url:
-            return {"error": "No download URL available for this file"}
-        
-        # Download the file using the same session/credentials as the SDK
-        # The download URL should include authentication
-        response = requests.get(download_url, stream=True)
-        response.raise_for_status()
-        
-        # Read the file content
-        file_content = response.content
-        
-        if save_path:
-            # Save to specified path
-            import os
-            # Create directory if it doesn't exist
-            os.makedirs(os.path.dirname(save_path), exist_ok=True)
-            
-            with open(save_path, 'wb') as f:
-                f.write(file_content)
-            
-            return {
-                "success": True,
-                "filename": filename,
-                "size": len(file_content),
-                "content_type": content_type,
-                "saved_to": save_path,
-                "download_url": download_url
-            }
-        else:
-            # Return file content as base64
-            content_base64 = base64.b64encode(file_content).decode('utf-8')
-            
-            return {
-                "success": True,
-                "filename": filename,
-                "size": len(file_content),
-                "content_type": content_type,
-                "content_base64": content_base64,
-                "download_url": download_url
-            }
-            
-    except requests.exceptions.RequestException as e:
-        return {"error": f"Download failed: {str(e)}"}
-    except Exception as e:
-        return {"error": f"Failed to download file: {str(e)}"}
-
-
-@mcp.tool
-def download_file_by_name(dataset_id: str, filename: str, save_path: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Download a file from a dataset by filename.
-    
-    Args:
-        dataset_id: The ID of the dataset containing the file
-        filename: The name of the file to download
-        save_path: Optional local path to save the file. If not provided, returns file content as base64
-        
-    Returns:
-        Dict containing download information (same format as download_dataset_file)
-    """
-    if not OPENHEXA_AVAILABLE:
-        return {"error": "OpenHEXA SDK not available. Please configure your OpenHEXA credentials."}
-    
-    try:
-        # First list all files in the dataset to find the one with matching filename
-        files_result = list_dataset_files(dataset_id)
-        if "error" in files_result:
-            return files_result
-        
-        files = files_result.get("files", [])
-        target_file = None
-        
-        # Find the file with matching filename
-        for file in files:
-            if file.get("filename") == filename:
-                target_file = file
-                break
-        
-        if not target_file:
-            return {"error": f"File '{filename}' not found in dataset '{dataset_id}'"}
-        
-        # Download the file using its ID
-        return download_dataset_file(target_file["id"], save_path)
-        
-    except Exception as e:
-        return {"error": f"Failed to download file by name: {str(e)}"}
 
 
 @mcp.tool
