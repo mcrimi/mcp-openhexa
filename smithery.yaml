@@ -1,0 +1,31 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'python',
+      args: ['-m', 'mcp_openhexa.server'],
+      env: {
+        HEXA_TOKEN: config.hexaToken,
+        HEXA_SERVER_URL: config.hexaServerUrl
+      }
+    })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - hexaToken
+      - hexaServerUrl
+    properties:
+      hexaToken:
+        type: string
+        description: Your OpenHEXA API token
+      hexaServerUrl:
+        type: string
+        description: Base URL of the OpenHEXA server (e.g., https://app.openhexa.org)
+  exampleConfig:
+    hexaToken: sk_test_1234567890abcdef
+    hexaServerUrl: https://app.openhexa.org

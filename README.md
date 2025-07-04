@@ -1,7 +1,17 @@
 # mcp-openhexa
+[![smithery badge](https://smithery.ai/badge/@mcrimi/mcp-openhexa)](https://smithery.ai/server/@mcrimi/mcp-openhexa)
+
 A VERY rudimentary proof of concept of a local MCP server for OpenHEXA using Claude Desktop
 
 # Setup guide
+
+### Installing via Smithery
+
+To install mcp-openhexa for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@mcrimi/mcp-openhexa):
+
+```bash
+npx -y @smithery/cli install @mcrimi/mcp-openhexa --client claude
+```
 
 ### 1. Setup .venv and install Dependencies
 
