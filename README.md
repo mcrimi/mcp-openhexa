@@ -39,6 +39,8 @@ pip install -e .
 3. Replace the placeholder values with your actual OpenHEXA credentials
 4. Restart Claude Desktop
 5. You should now see:
+
+   
 ![CleanShot 2025-07-04 at 10 24 17](https://github.com/user-attachments/assets/757ac51d-e8cd-49a1-93ed-7e9d84937dca)
 
 
